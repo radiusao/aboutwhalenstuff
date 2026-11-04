@@ -268,7 +268,7 @@ const SILHOUETTE_PAD = 40;
  * would, with the same edge pixels. While the light descends, the camera shifts for the shop or
  * the pointer parallax moves, the paths are filled directly as before. Set false to always fill.
  */
-const CACHE_SILHOUETTES = true;
+const CACHE_SILHOUETTES = false;
 /** A layer moving faster than this (CSS px per frame) is filled directly: only the slow camera drift is snapped. */
 const CACHE_STILL_PX = 0.05;
 /** Cached bitmaps stop this far below the screen: no layer is ever shifted up by more. */
