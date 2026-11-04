@@ -705,10 +705,10 @@ export function createEngine(): Engine {
   }
 
   function tapAt(x: number, y: number) {
-    // 1. Guardian pearl, daily bottle, kept bottles.
+    // 1. Guardian pearl and today's bottle.
     let hit: ReturnType<typeof objects.hit> = null;
     guard('objects.hit', () => {
-      hit = objects.hit(x, y);
+      hit = objects.hit(x, y, 'live');
     });
     const oh = hit as ReturnType<typeof objects.hit>;
     if (oh) {
@@ -737,7 +737,17 @@ export function createEngine(): Engine {
       tapCreature(best);
       return;
     }
-    // 3. The whale, once per pass.
+    // 3. Kept bottles on the ledge (after creatures, so a seahorse in front of them gets the tap).
+    let kept: ReturnType<typeof objects.hit> = null;
+    guard('objects.hit', () => {
+      kept = objects.hit(x, y, 'kept');
+    });
+    const kh = kept as ReturnType<typeof objects.hit>;
+    if (kh && kh.kind === 'shelf') {
+      emit({ type: 'shelfBottleTap', messageId: kh.messageId, x, y });
+      return;
+    }
+    // 4. The whale, once per pass.
     if (whale?.active && !whaleTapped) {
       let inside = false;
       guard('whale.hitTest', () => {
@@ -748,7 +758,7 @@ export function createEngine(): Engine {
         return;
       }
     }
-    // 4. The chest.
+    // 5. The chest.
     let chest = false;
     guard('scenery.chestHit', () => {
       chest = scenery.chestHit(x, y);

@@ -52,7 +52,12 @@ export interface WorldObjects {
   /** The opening bottle in front of everything (drawn after the occluders). */
   drawForeground(ctx: CanvasRenderingContext2D, f: WorldFrame): void;
 
-  hit(x: number, y: number): ObjectHit | null;
+  /**
+   * What a tap at (x, y) lands on. `which` limits it to the live things (the Guardian pearl and
+   * today's bottle) or to the kept bottles resting on the ledge; the engine checks creatures
+   * between the two, so a seahorse in front of the ledge gets the tap.
+   */
+  hit(x: number, y: number, which?: 'live' | 'kept' | 'all'): ObjectHit | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -64,6 +69,17 @@ const DEG = Math.PI / 180;
 
 /** Layer parallax (max px), §4.1. */
 const PX_SURFACE = 0.5;
+
+/** The top safe-area inset in CSS px (0 where there is none, or no DOM). */
+function measureSafeTop(): number {
+  if (typeof document === 'undefined' || !document.body) return 0;
+  const probe = document.createElement('div');
+  probe.style.cssText = 'position:fixed;top:0;left:0;width:0;height:env(safe-area-inset-top, 0px);visibility:hidden;pointer-events:none';
+  document.body.appendChild(probe);
+  const v = probe.getBoundingClientRect().height;
+  probe.remove();
+  return Number.isFinite(v) ? v : 0;
+}
 const PX_WHALE = 1.5;
 const PX_SEABED = 9;
 
@@ -639,6 +655,8 @@ export function createWorldObjects(callbacks: {
   let w = 1;
   let h = 1;
   let phone = true;
+  /** Height of the screen's top safe area (status bar, Dynamic Island), CSS px. */
+  let safeTop = 0;
   let now = 0;
   let reduced = false;
   let shelf = { x: 0, y: 0, w: 0 };
@@ -714,7 +732,11 @@ export function createWorldObjects(callbacks: {
 
   const bottleLen = () => (phone ? 40 : 54);
   // Desktop floats it clear of the HUD row (pearl count), "for you" included.
-  const bandY = () => (phone ? Math.max(0.16 * h, 128) : Math.max(0.15 * h, 120));
+  /**
+   * The bottle's waterline. On a phone it floats clear of the HUD row, which sits 20px under the
+   * safe area and is drawn 12% larger (about 50px tall), so its buttons never cover the bottle.
+   */
+  const bandY = () => (phone ? Math.max(0.16 * h, 128, safeTop + 20 + 50 + 32) : Math.max(0.15 * h, 120));
   const ledge = () => (shelf.w > 0 ? shelf : { x: 0.39 * w, y: 0.84 * h, w: 0.122 * w });
   const groundAt = (x: number) => {
     if (seabedY) {
@@ -1359,6 +1381,7 @@ export function createWorldObjects(callbacks: {
       w = nw;
       h = nh;
       phone = nphone;
+      safeTop = measureSafeTop();
       if (state !== 'hidden') {
         x0 *= kx;
         xRest = restX(nw);
@@ -1607,7 +1630,8 @@ export function createWorldObjects(callbacks: {
       if (state === 'opening' || state === 'open' || state === 'closing') drawDaily(ctx, f);
     },
 
-    hit(x, y) {
+    hit(x, y, which = 'all') {
+      if (which !== 'kept') {
       // 1. The Guardian pearl (generous: it is small and precious).
       if (pearl && pearl.collectedAt < 0 && pearl.size > 0.5) {
         const s = pearlScreen(null)!;
@@ -1621,6 +1645,8 @@ export function createWorldObjects(callbacks: {
           return { kind: 'bottle' };
         }
       }
+      }
+      if (which === 'live') return null;
       // 3. Kept bottles: the nearest one under the finger.
       const o = parOf(null, PX_SEABED);
       const L = bottleLen() * KEPT_SCALE;
