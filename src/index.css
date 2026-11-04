@@ -81,7 +81,7 @@ body,
   margin: 0;
   overflow: hidden;
   overscroll-behavior: none;
-  background: var(--bg);
+  background: transparent;
   color: var(--ink-deep);
   font-family: var(--font-jost);
   font-weight: 400;
@@ -90,6 +90,16 @@ body,
   -webkit-touch-callout: none;
   -webkit-text-size-adjust: 100%;
   touch-action: manipulation;
+}
+
+/*
+ * Behind the sea: the water's own colours, top to bottom, so any strip of screen the canvas
+ * doesn't reach (an iPhone status bar or toolbar area) blends into the water instead of
+ * showing as a flat band.
+ */
+html {
+  background: linear-gradient(180deg, var(--scrim-top) 0%, var(--bg) 50%, var(--scrim) 100%) fixed;
+  background-color: var(--scrim);
 }
 
 button {
