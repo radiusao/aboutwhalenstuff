@@ -1,5 +1,5 @@
 /**
- * The HUD (§7.1): the pearl count top-left; SHOP, LETTERS and the time dial top-right.
+ * The HUD (§7.1): the pearl count and the sound glyph top-left; SHOP, LETTERS and the time dial top-right.
  * Type sits straight on the water with a soft scrim of the local water colour behind each
  * cluster. Words, the dial horizon and the count share one baseline. After 12s without
  * input it fades to 30%, and comes back in 200ms; never while a panel is open.
@@ -11,6 +11,7 @@ import { useEngineEvent } from '../../world/EngineContext';
 import { useUiState } from '../uiState';
 import { PearlCount } from './PearlCount';
 import { TimeDial } from './TimeDial';
+import { SoundButton } from './SoundButton';
 import { EASE_DRIFT, EASE_ENTER, EASE_EXIT, useIsPhone } from './shared';
 
 const IDLE_MS = 12000;
@@ -160,6 +161,7 @@ export function Hud() {
         <div className="relative">
           <PearlCount value={pearls} />
         </div>
+        <SoundButton mode={state.activeLighting} />
       </Cluster>
 
       <Cluster

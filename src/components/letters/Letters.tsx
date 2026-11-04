@@ -214,6 +214,10 @@ function Strip() {
                   </p>
                 </>
               )}
+              <p className="font-jost" style={{ paddingTop: 28, fontWeight: 300, fontSize: 11, lineHeight: 1.45, color: ink(0.5) }}>
+                Music: “Morning”, “Meditation Impromptu 01” and “Frozen Star” by Kevin MacLeod (incompetech.com),
+                licensed under Creative Commons: By Attribution 4.0.
+              </p>
             </div>
           </div>
         </div>

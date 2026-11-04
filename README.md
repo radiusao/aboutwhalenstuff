@@ -32,3 +32,13 @@ Dev aids: `/?debug&quality=fixed` exposes `window.__engine` (`summonBottle()`, `
 - Once a day a bottle drifts in. Tap it to read the note; kept bottles rest on the seabed and in Letters.
 - Now and then the Guardian, a humpback, passes far behind. Tap it and it leaves a pearl.
 - Spend pearls in the shop on new creatures and things for the seabed.
+
+## Music
+
+Soft background music follows the time of day (`public/music/`: `day.m4a`, `sunset.m4a`, `midnight.m4a`). It is off until she taps the sound glyph next to the pearl count, and her choice is remembered.
+
+- Day: "Morning" by Kevin MacLeod (incompetech.com)
+- Sunset: "Meditation Impromptu 01" by Kevin MacLeod (incompetech.com)
+- Midnight: "Frozen Star" by Kevin MacLeod (incompetech.com)
+
+Licensed under Creative Commons: By Attribution 4.0 (https://creativecommons.org/licenses/by/4.0/). The credit also appears at the bottom of the Letters panel. To swap a track, replace the file with another `.m4a` (or change the paths in `src/utils/audio.ts`) and update the credit lines.
