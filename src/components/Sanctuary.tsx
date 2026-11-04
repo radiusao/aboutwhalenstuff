@@ -103,7 +103,7 @@ function SeaCanvas() {
     <>
       <canvas ref={ref} className="fixed top-0 left-0 block h-full w-full" style={{ touchAction: 'none' }} aria-hidden="true" />
       {diag && (
-        <pre className="pointer-events-none fixed top-[calc(var(--sat)+60px)] left-3 z-50 m-0 bg-black/60 p-2 font-mono text-[11px] leading-snug text-white">
+        <pre className="pointer-events-none fixed top-[calc(var(--sat)+80px)] left-3 z-50 m-0 bg-black/60 p-2 font-mono text-[11px] leading-snug text-white">
           {diag}
         </pre>
       )}

@@ -2,7 +2,8 @@
  * The HUD (§7.1): the pearl count and the sound glyph top-left; SHOP, LETTERS and the time dial top-right.
  * Type sits straight on the water with a soft scrim of the local water colour behind each
  * cluster. Words, the dial horizon and the count share one baseline. After 12s without
- * input it fades to 30%, and comes back in 200ms; never while a panel is open.
+ * input it fades to 30%, and comes back in 200ms; never while a panel is open. On a phone the
+ * row sits a little lower under the Dynamic Island and is drawn 12% larger.
  */
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { motion } from 'framer-motion';
@@ -156,7 +157,7 @@ export function Hud() {
     >
       <Cluster
         covered={coveredLeft}
-        className="left-[calc(var(--sal)+20px)] top-[calc(var(--sat)+6px)] h-11 items-start pt-[9px] sm:left-[max(48px,calc(var(--sal)+20px))] sm:top-[max(38px,calc(var(--sat)+6px))] sm:pt-[6.5px]">
+        className="left-[calc(var(--sal)+20px)] top-[calc(var(--sat)+20px)] h-11 origin-top-left scale-[1.12] items-start pt-[9px] sm:scale-100 sm:left-[max(48px,calc(var(--sal)+20px))] sm:top-[max(38px,calc(var(--sat)+6px))] sm:pt-[6.5px]">
         <Scrim w={240} h={120} />
         <div className="relative">
           <PearlCount value={pearls} />
@@ -166,7 +167,7 @@ export function Hud() {
 
       <Cluster
         covered={coveredRight}
-        className="right-[calc(var(--sar)+20px)] top-[calc(var(--sat)+6px)] items-start gap-6 sm:right-[max(48px,calc(var(--sar)+20px))] sm:top-[max(38px,calc(var(--sat)+6px))] sm:gap-7">
+        className="right-[calc(var(--sar)+20px)] top-[calc(var(--sat)+20px)] origin-top-right scale-[1.12] items-start gap-6 sm:scale-100 sm:right-[max(48px,calc(var(--sar)+20px))] sm:top-[max(38px,calc(var(--sat)+6px))] sm:gap-7">
         <Scrim w={phone ? 280 : 320} h={phone ? 120 : 140} />
         <WordButton
           word="Shop"

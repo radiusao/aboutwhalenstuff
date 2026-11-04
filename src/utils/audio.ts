@@ -2,8 +2,8 @@
  * Soft background music that follows the time of day: one looping track each for Day, Sunset
  * and Midnight (public/music/), crossfading slowly when the light changes.
  *
- * Off until she turns it on (browsers only allow sound after a tap). Her choice is remembered;
- * when it was on, the music starts again on her first tap of the next visit. Every track runs
+ * On by default: browsers don't allow sound before someone touches the page, so it starts with
+ * her first tap anywhere. The sound glyph turns it off, and that choice is remembered. Every track runs
  * through a Web Audio gain node, because iPhone Safari ignores an audio element's volume.
  * Only the track for the current light is loaded; another loads when the light changes.
  */
@@ -43,11 +43,12 @@ let on = readPref();
 let unlocked = false;
 const listeners = new Set<(on: boolean) => void>();
 
+/** On unless she turned it off. */
 function readPref(): boolean {
   try {
-    return localStorage.getItem(PREF_KEY) === '1';
+    return localStorage.getItem(PREF_KEY) !== '0';
   } catch {
-    return false;
+    return true;
   }
 }
 
@@ -182,12 +183,12 @@ export function initMusic(initialMode: LightingMode): () => void {
     if (document.hidden) void ctx.suspend();
     else if (on) void ctx.resume();
   };
-  window.addEventListener('pointerup', firstTap, { capture: true });
-  window.addEventListener('keydown', firstTap, { capture: true });
+  // Any of these counts as the tap a browser needs before it allows sound.
+  const events = ['pointerup', 'touchend', 'click', 'keydown'] as const;
+  for (const e of events) window.addEventListener(e, firstTap, { capture: true });
   document.addEventListener('visibilitychange', onVisibility);
   return () => {
-    window.removeEventListener('pointerup', firstTap, { capture: true });
-    window.removeEventListener('keydown', firstTap, { capture: true });
+    for (const e of events) window.removeEventListener(e, firstTap, { capture: true });
     document.removeEventListener('visibilitychange', onVisibility);
   };
 }

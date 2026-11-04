@@ -137,7 +137,7 @@ function Strip() {
         >
           <div className="flex flex-col" style={{ maxHeight: maxH }}>
             {/* Sits where the HUD row sits, so CLOSE lands where LETTERS was tapped. */}
-            <div className="flex shrink-0 justify-end" style={{ paddingTop: phone ? safe.top + 6 : Math.max(38, safe.top + 6), paddingRight: padR - 12 }}>
+            <div className="flex shrink-0 justify-end" style={{ paddingTop: phone ? safe.top + 20 : Math.max(38, safe.top + 6), paddingRight: padR - 12 }}>
               <button
                 ref={closeRef}
                 type="button"

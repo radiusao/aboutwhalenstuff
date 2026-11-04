@@ -126,7 +126,8 @@ function openWater(engine: Engine, ids: { id: string; jelly: boolean }[], lines:
     w - 40,
     Math.max(textWidth(lines[0], '300 28px Jost, Futura, sans-serif'), textWidth(lines[1], '300 16px Jost, Futura, sans-serif')),
   );
-  const start = cssPx('var(--sat)') + 6 + 44 + 64;
+  // Under the HUD row: on a phone it sits 20px below the safe area and is drawn 12% larger.
+  const start = cssPx('var(--sat)') + 20 + 50 + 64;
   const candidates: number[] = [];
   // Stay above the tallest decorations (the kelp forest's tips reach about a third of the way down).
   for (let top = start; candidates.length < 4 && top + BLOCK_H < h * 0.38; top += 56) candidates.push(top);
