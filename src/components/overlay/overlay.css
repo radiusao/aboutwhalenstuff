@@ -1,0 +1,87 @@
+/*
+ * HUD and overlay styles that Tailwind utilities don't express well. Type is set straight
+ * onto the scene: no panels, no glass, no shadows.
+ */
+
+/* Safe-area insets as variables, so the dev page can simulate the Dynamic Island. */
+:root {
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+}
+
+/* Controls: a 1px underline grows from 0 to 100% on hover and keyboard focus (280ms ease-enter). */
+.qf-word {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (hover: hover) {
+  .qf-control:hover .qf-word {
+    background-size: 100% 1px;
+  }
+}
+.qf-control:focus-visible {
+  outline: none;
+}
+.qf-control:focus-visible .qf-word {
+  background-size: 100% 1px;
+}
+.qf-control:focus-visible .qf-focus {
+  outline: 1px solid currentColor;
+  outline-offset: 4px;
+}
+
+/* Tracked caps: the only four words allowed (SHOP, LETTERS, CLOSE, the mode name). */
+.qf-caps {
+  font-family: var(--font-jost);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  /* Tracking adds space after the last letter; pull it back so right edges align. */
+  margin-right: -0.18em;
+}
+
+/* A soft radial lift of the local water colour behind a cluster of type (35% at the core). */
+.qf-scrim {
+  position: absolute;
+  pointer-events: none;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--qf-scrim-color) 35%, transparent) 0%,
+    color-mix(in srgb, var(--qf-scrim-color) 30%, transparent) 35%,
+    color-mix(in srgb, var(--qf-scrim-color) 16%, transparent) 65%,
+    color-mix(in srgb, var(--qf-scrim-color) 5%, transparent) 85%,
+    transparent 100%
+  );
+}
+
+/* The rolling pearl count: each digit is a strip clipped to one line, softened at the edges. */
+.qf-digit {
+  display: inline-block;
+  overflow: hidden;
+  height: 1.3em;
+  -webkit-mask-image: linear-gradient(transparent 0%, #000 22%, #000 78%, transparent 100%);
+  mask-image: linear-gradient(transparent 0%, #000 22%, #000 78%, transparent 100%);
+}
+.qf-digit > span {
+  display: block;
+}
+.qf-digit > span > span {
+  display: block;
+  height: 1.3em;
+  line-height: 1.3em;
+}
+
+/* The lower-left scrim only lifts the water while there is type in the column. */
+.qf-lowerleft > .qf-scrim {
+  transition: opacity 900ms cubic-bezier(0.7, 0, 0.84, 0);
+}
+.qf-lowerleft:not(:has(p)) > .qf-scrim {
+  opacity: 0;
+}

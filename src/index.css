@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+/*
+ * Fonts ship with the app (latin subsets, inlined by the single-file build), so nothing waits
+ * on a third-party request and the note's line measuring always sees the real handwriting.
+ */
+@font-face {
+  font-family: "Jost";
+  font-style: normal;
+  font-weight: 300 500;
+  font-display: swap;
+  src: url("./assets/fonts/jost-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Jost";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/jost-italic-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "DM Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/dm-mono-400-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "DM Mono";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("./assets/fonts/dm-mono-500-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Nothing You Could Do";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/nothing-you-could-do.woff2") format("woff2");
+}
+
+/*
+ * Quiet Fathoms. The scene is one full-viewport canvas; the UI is type set straight
+ * onto it. No panels, no glass, no pills, no shadows.
+ */
+@theme {
+  --font-jost: "Jost", Futura, "Avenir Next", sans-serif;
+  --font-mono: "DM Mono", ui-monospace, monospace;
+  --font-hand: "Nothing You Could Do", "Segoe Print", cursive;
+
+  --color-gold: #f2c14e;
+  --color-gold-deep: #b07a1e;
+  --color-lantern: #ffc86b;
+  --color-paper-ink: #1d2458;
+  --color-coral: #f2899a;
+
+  --ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-exit: cubic-bezier(0.7, 0, 0.84, 0);
+}
+
+/*
+ * Mode-driven inks. The HUD sets these on <html> when the time of day changes
+ * (inkTop switches 0.3s into the descent, inkDeep at 2.4s).
+ */
+:root {
+  color-scheme: dark;
+  --ink-top: #e6eaff;
+  --ink-deep: #e6eaff;
+  --paper: #d5dbf2;
+  /* Water color at the bottom of the screen; the shop scrim and caption scrims use it. */
+  --scrim: #121644;
+  --scrim-top: #384592;
+  --bg: #1e2566;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: var(--bg);
+  color: var(--ink-deep);
+  font-family: var(--font-jost);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 4px;
+}
+
+/* Text actions ("Adopt", "Keep it", SHOP): an underline that grows on hover and focus. */
+.grow-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size 280ms var(--ease-enter);
+}
+@media (hover: hover) {
+  .grow-underline:hover {
+    background-size: 100% 1px;
+  }
+}
+.grow-underline:focus-visible {
+  background-size: 100% 1px;
+}
+
+/* Permanently underlined actions (Adopt, Place, Keep it): 1px at a 0.3em offset. */
+.text-action {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+}
+
+.sr-only-list {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

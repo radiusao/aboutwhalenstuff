@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Harness</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Jost:ital,wght@0,300;0,400;0,500;1,400&family=Nothing+You+Could+Do&display=swap"
+    />
+    <style>
+      html, body { margin: 0; height: 100%; overflow: hidden; background: #111; }
+      canvas { position: fixed; inset: 0; width: 100%; height: 100%; touch-action: none; }
+      #log { position: fixed; left: 8px; bottom: 8px; color: #fff; font: 12px monospace; white-space: pre; }
+    </style>
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+    <div id="log"></div>
+    <script type="module" src="/src/dev/harness.ts"></script>
+  </body>
+</html>
